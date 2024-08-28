@@ -2,7 +2,7 @@ import docker
 
 PATH = "[core.container.container]"
 
-class container():
+class Container():
     def __init__(self):
         self.client = docker.from_env()
 

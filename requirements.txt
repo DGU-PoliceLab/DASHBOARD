@@ -1,3 +1,4 @@
 python-dotenv
 sqlite3
 docker
+ping3

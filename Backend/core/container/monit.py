@@ -1,8 +1,8 @@
 import time
-from container import container
+from core.container.container import Container
 
-def conatiner_monit(interval = 1):
-    con = container()
+def monit_conatiner(interval = 1):
+    con = Container()
     while True:
         result = con.check()
         print(result)
