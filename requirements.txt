@@ -1,0 +1,3 @@
+python-dotenv
+sqlite3
+docker

@@ -1,3 +1,3 @@
-import core.system.cpu
+import Backend.core.system.cpu
 
-core.system.cpu.test()
+core.system.__cpu__.test()

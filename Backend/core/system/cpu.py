@@ -3,7 +3,7 @@ from threading import Thread
 import time
 import psutil
 
-PATH = "core.system.cpu"
+PATH = "[core.system.cpu]"
 
 def get_cpu_name():
     print(cpuinfo.cpu.info[0])
