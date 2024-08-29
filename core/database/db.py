@@ -1,5 +1,6 @@
 import sqlite3
 import time
+from util.logger import set_logger
 from prettytable import PrettyTable
 
 PATH = "[core.database.db]"
@@ -10,7 +11,9 @@ class Database():
         self.table_list = ["system", "container", "module", "edgecam"]
         self.con = sqlite3.connect(self.file)
         self.cur = self.con.cursor()
+        self.logger = set_logger(PATH)
         self.create()
+        
 
     def _create_system(self):
         sql = '''
@@ -79,7 +82,7 @@ class Database():
     def create(self):
         for table in self.table_list:
             try:
-                print(PATH, f"Creating table({table})...")
+                self.logger.debug(f"Creating table({table})...")
                 if table == "system":
                     self._create_system()
                 elif table == "container":
@@ -88,10 +91,9 @@ class Database():
                     self._create_module()
                 elif table == "edgecam":
                     self._create_edgecam()
-                print(PATH, f"Create table({table}) Success!")
+                self.logger.debug(f"Create table({table}) Success!")
             except Exception as e:
-                print(e)
-                print(PATH, f"Table({table}) already exists!")
+                self.logger.warn(f"Table({table}) already exists!")
         self.con.commit()
 
     def _insert_system(self, time_stamp, data):
@@ -118,7 +120,7 @@ class Database():
                 '''
             self.cur.execute(sql, (level, time_stamp, data[0], str(data[1]), str(data[2]), str(data[3]), str(data[4]), data[5], data[6], data[7], data[8]))
         except Exception as e:
-            print(PATH, f"Error occurred, err: {e}")
+            self.logger.error(f"Error occurred, err: {e}")
 
     def _insert_container(self, time_stamp, data):
         try:
@@ -139,7 +141,7 @@ class Database():
                 '''
             self.cur.execute(sql, (level, time_stamp, int(data[0]), int(data[1]), int(data[2]), int(data[3]), int(data[4]), int(data[5])))
         except Exception as e:
-            print(PATH, f"Error occurred, err: {e}")
+            self.logger.error(f"Error occurred, err: {e}")
 
     def _insert_module(self, time_stamp, data):
         try:
@@ -163,7 +165,7 @@ class Database():
                 '''
             self.cur.execute(sql, (level, time_stamp, int(data[0]), int(data[1]), int(data[2]), int(data[3]), int(data[4]), int(data[5]), int(data[6])))
         except Exception as e:
-            print(PATH, f"Error occurred, err: {e}")
+            self.logger.error(f"Error occurred, err: {e}")
 
     def _insert_edgecam(self, time_stamp, data):
         try:
@@ -182,7 +184,7 @@ class Database():
             
             self.cur.execute(sql, (level, time_stamp, str(data[:-1]), int(data[-1])))
         except Exception as e:
-            print(PATH, f"Error occurred, err: {e}")
+            self.logger.error(f"Error occurred, err: {e}")
 
     def insert(self, target, data):
         time_stamp = time.time()
@@ -197,7 +199,7 @@ class Database():
                 self._insert_edgecam(time_stamp, data)
             self.con.commit()
         except Exception as e:
-            print(PATH, f"Error occurred, err: {e}")
+            self.logger.error(f"Error occurred, err: {e}")
 
     def _visualize(self, target, data, limit = 10):
         try:
@@ -247,9 +249,9 @@ class Database():
                     break
                 t.add_row(d)
                 cnt += 1
-            print(t)
+            self.logger.debug(t)
         except Exception as e:
-            print(PATH, f"Error occurred, err: {e}")
+            self.logger.error(f"Error occurred, err: {e}")
 
     def select(self, target, limit = 0, visualize = True):
         if limit == 0:

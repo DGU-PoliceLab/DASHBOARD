@@ -4,10 +4,12 @@ from core.system.gpu import Gpu
 from core.system.memory import Memory
 from core.system.storage import Storage
 from core.database.db import Database
+from util.logger import set_logger
 
 PATH = "[core.system.monit]"
 
 def monit_system(db, interval = 1):
+    logger = set_logger(PATH)
     if db == None:
         db = Database()
     cpu = Cpu(interval)
@@ -22,13 +24,13 @@ def monit_system(db, interval = 1):
             cur_gpu = gpu.check()
             cur_memory = memory.check()
             cur_storage = storage.check()
-            print(PATH, "[CPU]", cur_cpu, f"(usage rate, usage rate(per core))")
-            print(PATH, "[GPU]", cur_gpu, f"(usage rate, mem usage rate, mem usage)")
-            print(PATH, "[MEMORY]", cur_memory, f"(percent, used(byte)) ({cur_memory[1]/1024/1024/1024} gb)")
-            print(PATH, "[STORAGE]", cur_storage, f"(percent, used(byte)) ({cur_storage[1]/1024/1024/1024} gb)")
+            logger.debug(f"[CPU] {cur_cpu} (usage rate, usage rate(per core))")
+            logger.debug(f"[GPU] {cur_gpu} (usage rate, mem usage rate, mem usage)")
+            logger.debug(f"[MEMORY] {cur_memory} (percent, used(byte)) ({cur_memory[1]/1024/1024/1024} gb)")
+            logger.debug(f"[STORAGE] {cur_storage} (percent, used(byte)) ({cur_storage[1]/1024/1024/1024} gb)")
             cur_system = cur_cpu + cur_gpu + cur_memory + cur_storage
-            print(PATH, "[SYSTEM]", cur_system)
+            logger.debug(f"[SYSTEM] {cur_system}")
             db.insert("system", cur_system)
             time.sleep(interval)
         except Exception as e:
-            print(PATH, "Error occured, err: {e}")
+            logger.error(f"Error occured, err: {e}")
