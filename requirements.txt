@@ -1,4 +1,7 @@
 python-dotenv
+fastapi 
+uvicorn 
+jinja2
 sqlite3
 docker
 ping3

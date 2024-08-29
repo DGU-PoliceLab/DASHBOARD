@@ -1,4 +1,7 @@
 {
+    "log": {
+        "level": "DEBUG"
+    },
     "edgecam": {
         "유치실1": {
             "camera": "210.94.194.83",

@@ -9,6 +9,9 @@ def check(file):
     if not flag:
         with open(file, 'w', encoding="utf-8") as f:
             _init = {
+                "log": {
+                    "level": "debug"
+                },
                 "edgecam": {
                     "edgecam id": {
                         "camera": "camera ip",

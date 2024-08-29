@@ -251,7 +251,7 @@ class Database():
         except Exception as e:
             print(PATH, f"Error occurred, err: {e}")
 
-    def select(self, target, limit = 0):
+    def select(self, target, limit = 0, visualize = True):
         if limit == 0:
             sql = f"SELECT * FROM {target} ORDER BY id DESC"
             self.cur.execute(sql)
@@ -259,5 +259,6 @@ class Database():
             sql = f"SELECT * FROM {target} ORDER BY id DESC LIMIT ?"
             self.cur.execute(sql, (limit))
         response = self.cur.fetchall()
-        self._visualize(target, response)
+        if visualize:
+            self._visualize(target, response)
         return response
