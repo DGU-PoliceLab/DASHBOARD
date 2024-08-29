@@ -19,17 +19,25 @@ class Gpu():
             'utilization.gpu',
             'utilization.memory'
         )
+        self.available = True
 
-    def _check(self, nvidia_smi_path='nvidia-smi', no_units=True):
-        nu_opt = '' if not no_units else ',nounits'
-        cmd = '%s --query-gpu=%s --format=csv,noheader%s' % (nvidia_smi_path, ','.join(self.keys), nu_opt)
-        output = subprocess.check_output(cmd, shell=True)
-        lines = output.decode().split('\n')
-        lines = [ line.strip() for line in lines if line.strip() != '' ]
-        return [ { k: v for k, v in zip(self.keys, line.split(', ')) } for line in lines ]
+    def _check(self):
+        try:
+            nu_opt = '' if not True else ',nounits'
+            cmd = '%s --query-gpu=%s --format=csv,noheader%s' % ('nvidia-smi', ','.join(self.keys), nu_opt)
+            output = subprocess.check_output(cmd, shell=True)
+            lines = output.decode().split('\n')
+            lines = [ line.strip() for line in lines if line.strip() != '' ]
+            return [ { k: v for k, v in zip(self.keys, line.split(', ')) } for line in lines ]
+        except:
+            print(PATH, f"This system does not have a GPU installed, or the GPU is not supported.")
+            self.available = False
+            return False
 
     def check(self):
         gpus = self._check()
+        if gpus == False or self.available == False:
+            return [[], [], []]
         usage_rate = []
         mem_usage_rate = []
         mem_usage = []

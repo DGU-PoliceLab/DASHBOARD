@@ -1,5 +1,6 @@
 import sqlite3
 import time
+from prettytable import PrettyTable
 
 PATH = "[core.database.db]"
 
@@ -66,17 +67,11 @@ class Database():
     def _create_edgecam(self):
         sql = '''
                 CREATE TABLE edgecam (
-                    id INTEGER PRIMARY KEY, 
+                    id INTEGER PRIMARY KEY,
                     level TEXT,
                     occurred_at REAL,
-                    camera TEXT, 
-                    check_camera INTEGER, 
-                    rader TEXT, 
-                    check_rader INTEGER, 
-                    thermal TEXT, 
-                    check_thermal INTEGER,
-                    toilet_rader TEXT
-                    check_toilet_rader INTEGER
+                    check_edgecam TEXT,
+                    is_error INTEGER
                 );
             '''
         self.cur.execute(sql)
@@ -93,9 +88,10 @@ class Database():
                     self._create_module()
                 elif table == "edgecam":
                     self._create_edgecam()
-                print(PATH, f"Create table(({table}) Success!")
-            except:
-                print(PATH, f"Table(({table}) already exists!")
+                print(PATH, f"Create table({table}) Success!")
+            except Exception as e:
+                print(e)
+                print(PATH, f"Table({table}) already exists!")
         self.con.commit()
 
     def _insert_system(self, time_stamp, data):
@@ -122,28 +118,40 @@ class Database():
                 '''
             self.cur.execute(sql, (level, time_stamp, data[0], str(data[1]), str(data[2]), str(data[3]), str(data[4]), data[5], data[6], data[7], data[8]))
         except Exception as e:
-            print(PATH, e)
+            print(PATH, f"Error occurred, err: {e}")
 
-    def _insert_container(self, data):
+    def _insert_container(self, time_stamp, data):
         try:
+            level = "info"
+            if data[5]:
+                level = "error"
             sql = '''
                 INSERT INTO container (
+                    level, 
+                    occurred_at, 
                     check_web, 
                     check_was, 
                     check_module, 
                     check_mysql, 
                     check_redis, 
                     is_error
-                ) VALUES(?, ?, ?, ?, ?, ?)
+                ) VALUES(?, ?, ?, ?, ?, ?, ?, ?)
                 '''
-            self.cur.execute(sql, (int(data[0]), int(data[1]), int(data[2]), int(data[3]), int(data[4]), int(data[5])))
+            self.cur.execute(sql, (level, time_stamp, int(data[0]), int(data[1]), int(data[2]), int(data[3]), int(data[4]), int(data[5])))
         except Exception as e:
-            print(PATH, e)
+            print(PATH, f"Error occurred, err: {e}")
 
-    def _insert_module(self, data):
+    def _insert_module(self, time_stamp, data):
         try:
+            level = "info"
+            if 29 > data[0] >= 20:
+                level = "warn"
+            if 20 > data[0] or data[6]:
+                level = "error"
             sql = '''
                 INSERT INTO module (
+                    level, 
+                    occurred_at, 
                     processing_fps, 
                     check_falldown, 
                     check_selfharm, 
@@ -151,37 +159,105 @@ class Database():
                     check_violence, 
                     check_longterm, 
                     is_error
-                ) VALUES(?, ?, ?, ?, ?, ?, ?)
+                ) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?)
                 '''
-            self.cur.execute(sql, (int(data[0]), int(data[1]), int(data[2]), int(data[3]), int(data[4]), int(data[5]), int(data[6])))
+            self.cur.execute(sql, (level, time_stamp, int(data[0]), int(data[1]), int(data[2]), int(data[3]), int(data[4]), int(data[5]), int(data[6])))
         except Exception as e:
-            print(PATH, e)
+            print(PATH, f"Error occurred, err: {e}")
 
-    def _insert_edgecam(self, data):
+    def _insert_edgecam(self, time_stamp, data):
         try:
+            level = "info"
+            for row in data[:-1]:
+                if False in row:
+                    level = "error"
+                    break
             sql = '''
                 INSERT INTO edgecam (
-                    camera, 
-                    check_camera, 
-                    rader, 
-                    check_rader, 
-                    thermal, 
-                    check_thermal, 
-                    toilet_rader, 
-                    check_toilet_rader
-                ) VALUES(?, ?, ?, ?, ?, ?, ?, ?)'''
-            self.cur.execute(sql, (str(data[0]), int(data[1]), str(data[2]), int(data[3]), str(data[4]), int(data[5]), str(data[6]), int(data[7])))
+                    level, 
+                    occurred_at, 
+                    check_edgecam,
+                    is_error
+                ) VALUES(?, ?, ?, ?)'''
+            
+            self.cur.execute(sql, (level, time_stamp, str(data[:-1]), int(data[-1])))
         except Exception as e:
-            print(PATH, e)
+            print(PATH, f"Error occurred, err: {e}")
 
     def insert(self, target, data):
         time_stamp = time.time()
-        if target == "system":
-            self._insert_system(time_stamp, data)
-        self.con.commit()
+        try:
+            if target == "system":
+                self._insert_system(time_stamp, data)
+            elif target == "container":
+                self._insert_container(time_stamp, data)
+            elif target == "module":
+                self._insert_module(time_stamp, data)
+            elif target == "edgecam":
+                self._insert_edgecam(time_stamp, data)
+            self.con.commit()
+        except Exception as e:
+            print(PATH, f"Error occurred, err: {e}")
 
-    def select(self, target):
-        sql = f"SELECT * FROM {target}"
-        self.cur.execute(sql)
+    def _visualize(self, target, data, limit = 10):
+        try:
+            cnt = 0
+            if target == "system":
+                t = PrettyTable(["id", 
+                    "level", 
+                    "occurred_at", 
+                    "cpu_usage_rate", 
+                    "core_usage", 
+                    "gpu_usage_rate", 
+                    "gpu_mem_usage_rate", 
+                    "gpu_mem_usage", 
+                    "memory_usage_rate", 
+                    "memory_usage", 
+                    "storage_usage_rate", 
+                    "storage_usage"])
+            elif target == "container":
+                t = PrettyTable(["id", 
+                    "level", 
+                    "occurred_at", 
+                    "check_web", 
+                    "check_was", 
+                    "check_module", 
+                    "check_mysql", 
+                    "check_redis", 
+                    "is_error"])
+            elif target == "module":
+                t = PrettyTable(["id", 
+                    "level", 
+                    "occurred_at", 
+                    "processing_fps", 
+                    "check_falldown", 
+                    "check_selfharm", 
+                    "check_emotion", 
+                    "check_violence", 
+                    "check_longterm", 
+                    "is_error"])
+            elif target == "edgecam":
+                t = PrettyTable(["id", 
+                    "level", 
+                    "occurred_at", 
+                    "check_edgecam",
+                    "is_error"])
+            for d in data:
+                if limit != 0 and cnt >= limit:
+                    break
+                t.add_row(d)
+                cnt += 1
+            print(t)
+        except Exception as e:
+            print(PATH, f"Error occurred, err: {e}")
+
+    def select(self, target, limit = 0):
+        if limit == 0:
+            sql = f"SELECT * FROM {target} ORDER BY id DESC"
+            self.cur.execute(sql)
+        else:
+            sql = f"SELECT * FROM {target} ORDER BY id DESC LIMIT ?"
+            self.cur.execute(sql, (limit))
         response = self.cur.fetchall()
+        self._visualize(target, response)
         return response

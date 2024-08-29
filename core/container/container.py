@@ -27,7 +27,7 @@ class Container():
         return containers
     
     def check(self):
-        result = [None]
+        result = []
         _running = []
         _stopped = []
         check_containers = ["pls-web", "pls-was", "pls-module", "pls-mysql", "pls-redis"]
