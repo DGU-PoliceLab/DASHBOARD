@@ -1,5 +1,5 @@
 import sqlite3
-import time
+
 
 PATH = "[core.database.web]"
 
@@ -15,7 +15,7 @@ class Database():
             sql = f"SELECT * FROM {target} ORDER BY id DESC"
             self.cur.execute(sql)
         else:
-            sql = f"SELECT * FROM {target} ORDER BY id DESC LIMIT ?"
-            self.cur.execute(sql, (limit))
+            sql = f"SELECT * FROM {target} ORDER BY id DESC LIMIT {limit}"
+            self.cur.execute(sql)
         response = self.cur.fetchall()
         return response
