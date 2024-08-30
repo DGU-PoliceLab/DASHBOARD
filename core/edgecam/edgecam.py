@@ -28,7 +28,7 @@ class Edgecam():
                 else:
                     temp.append(None)
             t.add_row(temp)
-        self.logger.debug("\n" + t)
+        self.logger.debug("\n" + str(t))
         flag = len(e) > 0
         if flag:
             e_list = ", ".join(e)
@@ -39,7 +39,7 @@ class Edgecam():
         t = PrettyTable(self.h)
         for row in data:
             t.add_row(row)
-        self.logger.debug("\n" + t)
+        self.logger.debug("\n" + str(t))
 
     def _check(self, data):
         result = []
