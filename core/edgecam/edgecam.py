@@ -1,6 +1,7 @@
 import json
 from ping3 import ping
 from prettytable import PrettyTable
+from util.logger import set_logger
 
 PATH = "[core.edgecam.edgecam]"
 
@@ -8,10 +9,11 @@ class Edgecam():
     def __init__(self, config):
         self.config = config
         self.h = ["id", "camera", "thermal", "rader", "toilet_rader"]
+        self.logger = set_logger(PATH)
         self.validation()
     
     def validation(self):
-        print(PATH, "Checking validation config...")
+        self.logger.debug(PATH, "Checking validation config...")
         t = PrettyTable(self.h)
         e = []
         for key in self.config:
@@ -26,18 +28,18 @@ class Edgecam():
                 else:
                     temp.append(None)
             t.add_row(temp)
-        print(t)
+        self.logger.debug("\n" + t)
         flag = len(e) > 0
         if flag:
             e_list = ", ".join(e)
             assert False, f"{PATH} {len(e)} Invaild data, ({e_list})"
 
     def _visualize(self, data):
-        print(PATH, "Connection result")
+        self.logger.debug(PATH, "Connection result")
         t = PrettyTable(self.h)
         for row in data:
             t.add_row(row)
-        print(t)
+        self.logger.debug("\n" + t)
 
     def _check(self, data):
         result = []
@@ -51,7 +53,7 @@ class Edgecam():
         return result
         
     def check(self):
-        print(PATH, "Checking connection...")
+        self.logger.debug(PATH, "Checking connection...")
         result = []
         _active = []
         _inactive = []

@@ -93,7 +93,7 @@ class Database():
                     self._create_edgecam()
                 self.logger.debug(f"Create table({table}) Success!")
             except Exception as e:
-                self.logger.warn(f"Table({table}) already exists!")
+                self.logger.debug(f"Table({table}) already exists!")
         self.con.commit()
 
     def _insert_system(self, time_stamp, data):

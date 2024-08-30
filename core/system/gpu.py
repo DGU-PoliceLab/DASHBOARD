@@ -1,10 +1,11 @@
 import subprocess
-import json
+from util.logger import set_logger
 
 PATH = "[core.system.cpu]"
 
 class Gpu():
     def __init__(self):
+        self.logger = set_logger(PATH)
         self.usage_rate = []
         self.mem_usage_rate = []
         self.mem_usage = []
@@ -30,7 +31,7 @@ class Gpu():
             lines = [ line.strip() for line in lines if line.strip() != '' ]
             return [ { k: v for k, v in zip(self.keys, line.split(', ')) } for line in lines ]
         except:
-            print(PATH, f"This system does not have a GPU installed, or the GPU is not supported.")
+            self.logger.error(PATH, f"This system does not have a GPU installed, or the GPU is not supported.")
             self.available = False
             return False
 

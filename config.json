@@ -1,6 +1,6 @@
 {
     "log": {
-        "level": "DEBUG"
+        "level": "INFO"
     },
     "edgecam": {
         "유치실1": {
