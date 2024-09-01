@@ -1,3 +1,5 @@
+import os
+import time
 import docker
 from util.logger import set_logger
 
@@ -6,7 +8,22 @@ PATH = "[core.container.container]"
 class Container():
     def __init__(self):
         self.logger = set_logger(PATH)
-        self.client = docker.from_env()
+        self._start()
+
+    def _start(self):
+        try:
+            self.client = docker.from_env()
+        except:
+            self.logger.warn("Docker Engine is not running. Start Docker Engine...")
+            os.system(r'"C:\Program Files\Docker\Docker\frontend\Docker Desktop.exe"')
+            for t in range(10, -1, -1):
+                if t == 0:
+                    console = " " *30
+                else:
+                    console = f"Try again in {t} second..."
+                print(console, end="\r", flush=True)
+                time.sleep(1)
+            self._start()
 
     def run(self, target = None):
         if target == None:

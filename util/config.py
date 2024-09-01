@@ -1,8 +1,11 @@
 import os
 import json
 from prettytable import PrettyTable
+from util.logger import set_logger
 
 PATH = "[util.config]"
+
+logger = set_logger(PATH)
 
 def check(file):
     flag = os.path.isfile(file)
@@ -34,7 +37,7 @@ def load():
     return config_data
 
 def visualize(data):
-    print(PATH, "Config(edgecam)")
+    logger.debug(PATH, "Config(edgecam)")
     edgecam = data["edgecam"]
     t = PrettyTable(["id", 
                     "camera",
@@ -43,6 +46,6 @@ def visualize(data):
                     "toilet_rader"])
     for key in edgecam:
         t.add_row([key, edgecam[key]["camera"], edgecam[key]["thermal"], edgecam[key]["rader"], edgecam[key]["toilet_rader"]])
-    print(t)
+    logger.debug(t)
     
     

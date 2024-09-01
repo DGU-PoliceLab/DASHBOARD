@@ -7,31 +7,31 @@ export default function ContainerDataGrid({ data }) {
         {
             id: 1,
             name: "pls-web",
-            desc: "폴리스랩 2.0 웹 호스팅을 위한 컨테이너",
+            desc: "웹 호스팅을 위한 컨테이너",
             status: data["web"] ? "Online" : "Offline",
         },
         {
             id: 2,
             name: "pls-was",
-            desc: "폴리스랩 2.0 서비스 구동을 위한 컨테이너",
+            desc: "서비스 구동을 위한 컨테이너",
             status: data["was"] ? "Online" : "Offline",
         },
         {
             id: 3,
             name: "pls-module",
-            desc: "폴리스랩 2.0 인공지능 모듈 구동을 위한 컨테이너",
+            desc: "인공지능 모듈 구동을 위한 컨테이너",
             status: data["module"] ? "Online" : "Offline",
         },
         {
             id: 4,
             name: "pls-mysql",
-            desc: "폴리스랩 2.0 기반 데이터 저장을 위한 컨테이너",
+            desc: "기반 데이터 저장을 위한 컨테이너",
             status: data["mysql"] ? "Online" : "Offline",
         },
         {
             id: 5,
             name: "pls-redis",
-            desc: "폴리스랩 2.0 임시 및 캐싱 데이터 저장을 위한 컨테이너",
+            desc: "임시 및 캐싱 데이터 저장을 위한 컨테이너",
             status: data["redis"] ? "Online" : "Offline",
         },
     ]);

@@ -137,7 +137,7 @@ export default function MainGrid() {
         });
     };
     const setEdgecamData = (edgecamData) => {
-        setModuleStatus(edgecamData["status"]);
+        setEdgecamStatus(edgecamData["status"]);
         let temp = [];
         edgecamData["edgecam"].forEach((item, idx) => {
             temp.push({
@@ -203,9 +203,9 @@ export default function MainGrid() {
                         <StatCard {...card} />
                     </Grid>
                 ))}
-                <Grid size={{ sm: 12, md: 12 }}>
+                {/* <Grid size={{ sm: 12, md: 12 }}>
                     <SystemChart />
-                </Grid>
+                </Grid> */}
             </Grid>
             <Grid
                 container
