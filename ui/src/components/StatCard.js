@@ -70,7 +70,6 @@ function StatCard({ title, value, interval, data, percent, gap }) {
     const color = labelColors[trend];
     const flag = percent >= 95 ? "error" : "normal";
     const chartColor = trendColors[flag];
-    console.log(value);
 
     return (
         <Card variant="outlined" sx={{ height: "100%", flexGrow: 1 }}>

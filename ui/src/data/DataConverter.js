@@ -33,8 +33,6 @@ export const convSystemData = (data, pre) => {
         ];
     } else {
         result = pre;
-        console.log("PRE");
-        console.table(result);
         result[0]["value"] = `${data["cpu"]}% 사용중`;
         result[0]["gap"] = data["cpu"] - pre[0]["percent"];
         result[0]["percent"] = data["cpu"];
@@ -61,6 +59,27 @@ export const convSystemData = (data, pre) => {
             }
         }
     }
+    return result;
+};
+
+export const convSystemLog = (log) => {
+    let result = [];
+    log.forEach((item, idx) => {
+        result.push({
+            id: item[0],
+            level: item[1],
+            occurred_at: new Date(item[2] * 1000).toLocaleString(),
+            cpu_usage: item[3],
+            cpu_usage_core: item[4],
+            gpu_usage_rate: item[5],
+            gpu_mem_usage_rate: item[6],
+            gpu_mem_usage: item[7],
+            memory_usage_rate: item[8],
+            memory_usage: (item[9] / 1024 / 1024).toFixed(2),
+            storage_usage_rate: item[10],
+            storage_usage: (item[11] / 1024 / 1024).toFixed(2),
+        });
+    });
     return result;
 };
 
@@ -97,6 +116,24 @@ export const convContainerData = (data) => {
             status: data["redis"] ? "Online" : "Offline",
         },
     ];
+    return result;
+};
+
+export const convContainerLog = (log) => {
+    let result = [];
+    log.forEach((item, idx) => {
+        result.push({
+            id: item[0],
+            level: item[1],
+            occurred_at: new Date(item[2] * 1000).toLocaleString(),
+            web: item[3] === 1 ? "Online" : "Offline",
+            was: item[4] === 1 ? "Online" : "Offline",
+            module: item[5] === 1 ? "Online" : "Offline",
+            mysql: item[6] === 1 ? "Online" : "Offline",
+            redis: item[7] === 1 ? "Online" : "Offline",
+            is_error: item[8] === 1 ? "True" : "False",
+        });
+    });
     return result;
 };
 
@@ -166,6 +203,20 @@ export const convEdgecamData = (data) => {
                     : item["toilet_rader"] === null
                     ? "None"
                     : "Offlien",
+        });
+    });
+    return result;
+};
+
+export const convEdgecamLog = (log) => {
+    let result = [];
+    log.forEach((item, idx) => {
+        result.push({
+            id: item[0],
+            level: item[1],
+            occurred_at: new Date(item[2] * 1000).toLocaleString(),
+            edgecam: item[3],
+            is_error: item[4] === 1 ? "True" : "False",
         });
     });
     return result;
