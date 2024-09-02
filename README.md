@@ -39,3 +39,68 @@
 -   **열화상 센서** : 열화상 센서와 서버간 연결 상태를 시각화합니다.
 -   **레이더 센서** : 레이더 센서와 서버간 연결 상태를 시각화합니다.
 -   **화장실 레이더 센서** : 화장실 레이더 센서와 서버간 연결 상태를 시각화합니다.
+
+# 설치
+
+### 1. 라이브러리 설치
+
+```
+pip install -r requirements.txt
+```
+
+대시보드 실행을 위해 아래 라이브러리가 필요합니다.
+
+-   python-dotenv
+-   psutil
+-   fastapi
+-   uvicorn
+-   jinja2
+-   docker
+-   ping3
+-   prettytable
+
+### 2. Config 수정
+
+config.json
+
+```
+{
+    "log": {
+        "level": "INFO" // 개발모드 : DEBUG, 실행모드 : INFO
+    },
+    "edgecam": {
+        "엣지카메라명": {
+            "camera": "실상 카메라 IP",
+            "thermal": "열화상 센서 IP",
+            "rader": "레이더 센서 IP",
+            "toilet_rader": "화장실 레이더 센서 IP"
+        },
+        ...
+    }
+}
+
+```
+
+# 실행
+
+### 모니터링
+
+서버의 상태 모니터링 및 데이터베이스 기록 기능을 실행합니다.
+
+```
+python monit.py
+```
+
+-   Docker Desktop이 실행상태가 아니라면 자동으로 실행됩니다.(Windows만 지원)
+
+### 대시보드
+
+서버의 상태 시각화 기능을 실행합니다.
+
+```
+uvicorn main:app --reload
+```
+
+다음 링크로 대시보드에 접속합니다.
+[DASHBOARD](http://localhost:8000)
+또는 https://localhost:8000
