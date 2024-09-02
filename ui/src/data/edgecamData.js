@@ -1,5 +1,4 @@
 import * as React from "react";
-import Avatar from "@mui/material/Avatar";
 import Chip from "@mui/material/Chip";
 
 function renderStatus(status) {
@@ -10,25 +9,6 @@ function renderStatus(status) {
     };
 
     return <Chip label={status} color={colors[status]} size="small" />;
-}
-
-export function renderAvatar(params) {
-    if (params.value == null) {
-        return "";
-    }
-
-    return (
-        <Avatar
-            sx={{
-                backgroundColor: params.value.color,
-                width: "24px",
-                height: "24px",
-                fontSize: "0.85rem",
-            }}
-        >
-            {params.value.name.toUpperCase().substring(0, 1)}
-        </Avatar>
-    );
 }
 
 export const columns = [

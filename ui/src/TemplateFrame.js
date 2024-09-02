@@ -1,16 +1,12 @@
 import * as React from "react";
 import PropTypes from "prop-types";
 import { createTheme, ThemeProvider, styled } from "@mui/material/styles";
-import Select from "@mui/material/Select";
-import MenuItem from "@mui/material/MenuItem";
-import FormControl from "@mui/material/FormControl";
 import Button from "@mui/material/Button";
 import IconButton from "@mui/material/IconButton";
 import Box from "@mui/material/Box";
 import AppBar from "@mui/material/AppBar";
 import Toolbar from "@mui/material/Toolbar";
 import ArrowBackRoundedIcon from "@mui/icons-material/ArrowBackRounded";
-import ToggleColorMode from "./components/ToggleColorMode";
 import getDashboardTheme from "./theme/getDashboardTheme";
 
 const StyledAppBar = styled(AppBar)(({ theme }) => ({
@@ -35,9 +31,6 @@ function TemplateFrame({
     toggleColorMode,
     children,
 }) {
-    const handleChange = (event) => {
-        toggleCustomTheme(event.target.value === "custom");
-    };
     const dashboardTheme = createTheme(getDashboardTheme(mode));
 
     return (
@@ -66,7 +59,7 @@ function TemplateFrame({
                             aria-label="관제 화면으로 돌아가기"
                             startIcon={<ArrowBackRoundedIcon />}
                             component="a"
-                            href="/material-ui/getting-started/templates/"
+                            href="https://localhost"
                             sx={{ display: { xs: "none", sm: "flex" } }}
                         >
                             관제 화면으로 돌아가기
@@ -75,7 +68,7 @@ function TemplateFrame({
                             size="small"
                             aria-label="관제 화면으로 돌아가기"
                             component="a"
-                            href="/material-ui/getting-started/templates/"
+                            href="https://localhost"
                             sx={{ display: { xs: "auto", sm: "none" } }}
                         >
                             <ArrowBackRoundedIcon />

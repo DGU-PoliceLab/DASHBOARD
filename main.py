@@ -33,7 +33,12 @@ async def get(request: Request):
 
 @app.get("/live")
 async def live(request: Request):
-    response = api.collect()
+    response = api.realtime()
+    return response
+
+@app.get("/log")
+async def log(target: str = None):
+    response = api.log(target)
     return response
 
 @app.websocket("/ws")

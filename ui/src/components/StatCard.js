@@ -1,4 +1,3 @@
-import * as React from "react";
 import PropTypes from "prop-types";
 import { useTheme } from "@mui/material/styles";
 import Box from "@mui/material/Box";
@@ -71,6 +70,7 @@ function StatCard({ title, value, interval, data, percent, gap }) {
     const color = labelColors[trend];
     const flag = percent >= 95 ? "error" : "normal";
     const chartColor = trendColors[flag];
+    console.log(value);
 
     return (
         <Card variant="outlined" sx={{ height: "100%", flexGrow: 1 }}>
@@ -119,8 +119,8 @@ function StatCard({ title, value, interval, data, percent, gap }) {
                             colors={[chartColor]}
                             data={data}
                             area
-                            showHighlight
-                            showTooltip
+                            // showHighlight
+                            // showTooltip
                             xAxis={{
                                 scaleType: "band",
                                 data: daysInWeek, // Use the correct property 'data' for xAxis

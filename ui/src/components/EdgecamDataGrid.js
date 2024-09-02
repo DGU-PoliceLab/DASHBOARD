@@ -1,14 +1,12 @@
-import { useState } from "react";
 import { DataGrid } from "@mui/x-data-grid";
-import { columns, rows } from "../data/edgecamData";
+import { columns } from "../data/edgecamData";
 
 export default function EdgecamDataGrid({ data }) {
-    const [rows, setRows] = useState([...data]);
     return (
         <DataGrid
             autoHeight
             // checkboxSelection
-            rows={rows}
+            rows={data}
             columns={columns}
             getRowClassName={(params) =>
                 params.indexRelativeToCurrentPage % 2 === 0 ? "even" : "odd"

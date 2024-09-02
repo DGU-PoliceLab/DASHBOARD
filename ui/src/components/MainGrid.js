@@ -4,15 +4,20 @@ import Box from "@mui/material/Box";
 import Chip from "@mui/material/Chip";
 import Typography from "@mui/material/Typography";
 import Copyright from "../internals/components/Copyright";
-import SystemChart from "./SystemChart";
+// import SystemChart from "./SystemChart";
 import StatCard from "./StatCard";
 import ContainerDataGrid from "./ContainerDataGrid";
 import ModuleDataGrid from "./ModuelDataGrid";
 import EdgecamDataGrid from "./EdgecamDataGrid";
 import axios from "axios";
+import {
+    convSystemData,
+    convContainerData,
+    convModuleData,
+    convEdgecamData,
+} from "../data/DataConverter";
 
 export default function MainGrid() {
-    const [updatedAt, setUpdatedAt] = useState(new Date());
     const [systemStatus, setSystemStatus] = useState("정상");
     const [containerStatus, setConatinerStatus] = useState("정상");
     const [moduleStatus, setModuleStatus] = useState("정상");
@@ -47,25 +52,9 @@ export default function MainGrid() {
             data: [],
         },
     ]);
-    const [container, setContainer] = useState({
-        status: "",
-        web: false,
-        was: false,
-        module: false,
-        mysql: false,
-        redis: false,
-    });
-    const [module, setModule] = useState({
-        status: "",
-        process: 0,
-        falldown: false,
-        longterm: false,
-        selfharm: false,
-        emotion: false,
-        violence: false,
-    });
+    const [container, setContainer] = useState([]);
+    const [module, setModule] = useState([]);
     const [edgecam, setEdgecam] = useState([]);
-
     const getData = async () => {
         const response = await axios.get("http://localhost:8000/live");
         const data = response["data"];
@@ -73,114 +62,37 @@ export default function MainGrid() {
         setContainerData(data["container"]);
         setModuleData(data["module"]);
         setEdgecamData(data["edgecam"]);
-        setUpdatedAt(new Date());
     };
-
     const setSystemData = (systemData) => {
         setSystemStatus(systemData["status"]);
-        let pre = system;
-        pre[0]["value"] = `${systemData["cpu"]}% 사용중`;
-        pre[0]["gap"] = systemData["cpu"] - pre[0]["percent"];
-        pre[0]["percent"] = systemData["cpu"];
-        if (systemData["gpu"] === -1) {
-            pre[1]["value"] = `사용할 수 없음`;
-        } else {
-            pre[1]["value"] = `${systemData["gpu"]}% 사용중`;
-            pre[1]["gap"] = systemData["gpu"] - pre[1]["percent"];
-            pre[1]["percent"] = systemData["gpu"];
-        }
-        pre[2]["value"] = `${systemData["memory"]}% 사용중`;
-        pre[2]["gap"] = systemData["memory"] - pre[2]["percent"];
-        pre[2]["percent"] = systemData["memory"];
-        pre[3]["value"] = `${systemData["storage"]}% 사용중`;
-        pre[3]["gap"] = systemData["storage"] - pre[3]["percent"];
-        pre[3]["percent"] = systemData["storage"];
-        pre = systemGraphHandler(pre, systemData);
-        setSystem(pre);
+        const convData = convSystemData(systemData, system);
+        setSystem(convData);
     };
-
-    const systemGraphHandler = (pre, cur) => {
-        pre[0]["data"].push(cur["cpu"]);
-        pre[1]["data"].push(cur["gpu"]);
-        pre[2]["data"].push(cur["memory"]);
-        pre[3]["data"].push(cur["storage"]);
-        for (let i = 0; i < 4; i++) {
-            if (pre[i]["data"].length > 30) {
-                pre[i]["data"].shift();
-            }
-        }
-        return pre;
-    };
-
     const setContainerData = (containerData) => {
         setConatinerStatus(containerData["status"]);
-        setContainer({
-            status: containerData["status"],
-            web: containerData["web"],
-            was: containerData["was"],
-            module: containerData["module"],
-            mysql: containerData["mysql"],
-            redis: containerData["redis"],
-        });
+        const convData = convContainerData(containerData);
+        setContainer(convData);
     };
-
     const setModuleData = (moduleData) => {
         setModuleStatus(moduleData["status"]);
-        setModule({
-            status: moduleData["status"],
-            process: moduleData["process"],
-            falldown: moduleData["falldown"],
-            longterm: moduleData["longterm"],
-            selfharm: moduleData["selfharm"],
-            emotion: moduleData["emotion"],
-            violence: moduleData["violence"],
-        });
+        const convData = convModuleData(moduleData);
+        setModule(convData);
     };
     const setEdgecamData = (edgecamData) => {
         setEdgecamStatus(edgecamData["status"]);
-        let temp = [];
-        edgecamData["edgecam"].forEach((item, idx) => {
-            temp.push({
-                id: idx,
-                name: item["name"],
-                camera:
-                    item["camera"] === true
-                        ? "Online"
-                        : item["camera"] === null
-                        ? "None"
-                        : "Offlien",
-                thermal:
-                    item["thermal"] === true
-                        ? "Online"
-                        : item["thermal"] === null
-                        ? "None"
-                        : "Offlien",
-                rader:
-                    item["rader"] === true
-                        ? "Online"
-                        : item["rader"] === null
-                        ? "None"
-                        : "Offlien",
-                toilet_rader:
-                    item["toilet_rader"] === true
-                        ? "Online"
-                        : item["toilet_rader"] === null
-                        ? "None"
-                        : "Offlien",
-            });
-        });
-        setEdgecam(temp);
+        const convData = convEdgecamData(edgecamData["edgecam"]);
+        setEdgecam(convData);
     };
-
     useEffect(() => {
+        getData();
         const timer = setInterval(() => {
             getData();
         }, 3000);
         return () => clearInterval(timer);
     }, []);
+
     return (
         <Box sx={{ width: "100%", maxWidth: { sm: "100%", md: "1700px" } }}>
-            {/* cards */}
             <Typography component="h2" variant="h6" sx={{ mb: 2 }}>
                 시스템{" "}
                 <Chip
@@ -195,12 +107,9 @@ export default function MainGrid() {
                 columns={12}
                 sx={{ mb: (theme) => theme.spacing(2) }}
             >
-                {system.map((card, index) => (
-                    <Grid
-                        key={updatedAt + index}
-                        size={{ xs: 12, sm: 6, lg: 3 }}
-                    >
-                        <StatCard {...card} />
+                {system.map((systemInfo, index) => (
+                    <Grid size={{ xs: 12, sm: 6, lg: 3 }}>
+                        <StatCard {...systemInfo} key={index} />
                     </Grid>
                 ))}
                 {/* <Grid size={{ sm: 12, md: 12 }}>
@@ -224,7 +133,7 @@ export default function MainGrid() {
                             label={containerStatus}
                         />
                     </Typography>
-                    <ContainerDataGrid data={container} key={updatedAt} />
+                    <ContainerDataGrid data={container} />
                 </Grid>
                 <Grid size={{ md: 12, lg: 6 }}>
                     <Typography component="h2" variant="h6" sx={{ mb: 2 }}>
@@ -237,7 +146,7 @@ export default function MainGrid() {
                             label={moduleStatus}
                         />
                     </Typography>
-                    <ModuleDataGrid data={module} key={updatedAt} />
+                    <ModuleDataGrid data={module} />
                 </Grid>
                 <Grid size={{ md: 12, lg: 12 }}>
                     <Typography component="h2" variant="h6" sx={{ mb: 2 }}>
@@ -250,7 +159,7 @@ export default function MainGrid() {
                             label={edgecamStatus}
                         />
                     </Typography>
-                    <EdgecamDataGrid data={edgecam} key={updatedAt} />
+                    <EdgecamDataGrid data={edgecam} />
                 </Grid>
             </Grid>
             <Copyright sx={{ my: 4 }} />

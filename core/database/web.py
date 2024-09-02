@@ -1,6 +1,5 @@
 import sqlite3
 
-
 PATH = "[core.database.web]"
 
 class Database():
