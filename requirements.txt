@@ -1,8 +1,7 @@
-python-dotenv
-psutil
 fastapi 
 uvicorn 
 jinja2
+psutil
 docker
 ping3
 prettytable
