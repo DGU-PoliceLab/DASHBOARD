@@ -12,7 +12,8 @@
 *   > 치안을 뜻하는 폴리스(Police)와 리빙랩(Living-Lab)의 합성어
 
 -   치안 현장의 문제해결을 위해 실제 적용 및 검증할 수 있도록 현장에서 실증연구를 강화하여 완결성 제고
-    ![PoliceLab 2.0](https://www.nrf.re.kr/file/image?path=S5u0o7mp43XMnSXx5OUq4zSOZuFLG/hVD2gLAtrKTJ0=&name=%EF%BC%8FeqnXmMLaSGZZF%EF%BC%8FQMhbBmI/tBCI9Q0SGVwTKMjiV7wM=)
+
+![PoliceLab 2.0](/resource/introduction.png)  
 
 ## 주요기능
 
