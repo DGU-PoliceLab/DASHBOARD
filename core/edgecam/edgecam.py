@@ -13,7 +13,7 @@ class Edgecam():
         self.validation()
     
     def validation(self):
-        self.logger.debug(PATH, "Checking validation config...")
+        self.logger.debug("Checking validation config...")
         t = PrettyTable(self.h)
         e = []
         for key in self.config:
@@ -35,7 +35,7 @@ class Edgecam():
             assert False, f"{PATH} {len(e)} Invaild data, ({e_list})"
 
     def _visualize(self, data):
-        self.logger.debug(PATH, "Connection result")
+        self.logger.debug("Connection result")
         t = PrettyTable(self.h)
         for row in data:
             t.add_row(row)
@@ -53,7 +53,7 @@ class Edgecam():
         return result
         
     def check(self):
-        self.logger.debug(PATH, "Checking connection...")
+        self.logger.debug("Checking connection...")
         result = []
         _active = []
         _inactive = []

@@ -1,7 +1,7 @@
 import subprocess
 from util.logger import set_logger
 
-PATH = "[core.system.cpu]"
+PATH = "[core.system.gpu]"
 
 class Gpu():
     def __init__(self):
@@ -21,17 +21,20 @@ class Gpu():
             'utilization.memory'
         )
         self.available = True
+        self.msg = False
 
     def _check(self):
         try:
             nu_opt = '' if not True else ',nounits'
             cmd = '%s --query-gpu=%s --format=csv,noheader%s' % ('nvidia-smi', ','.join(self.keys), nu_opt)
-            output = subprocess.check_output(cmd, shell=True)
+            output = subprocess.check_output(cmd)
             lines = output.decode().split('\n')
             lines = [ line.strip() for line in lines if line.strip() != '' ]
             return [ { k: v for k, v in zip(self.keys, line.split(', ')) } for line in lines ]
         except:
-            self.logger.error(PATH, f"This system does not have a GPU installed, or the GPU is not supported.")
+            if self.msg == False:
+                self.logger.warn(f"This system does not have a GPU installed, or the GPU is not supported.")
+            self.msg = True
             self.available = False
             return False
 

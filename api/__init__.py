@@ -30,9 +30,14 @@ class Api():
             print("error")
         finally:
             return self.response
+        
+    def update(self, module):
+        try:
+            self.module.update(module)
+        except Exception as e:
+            print("error")
 
     def log(self, target = None):
-        print(target)
         try:
             if target == "system" or target == None:
                 _system = self.database.select("system")

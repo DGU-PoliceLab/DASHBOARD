@@ -37,7 +37,7 @@ def load():
     return config_data
 
 def visualize(data):
-    logger.debug(PATH, "Config(edgecam)")
+    logger.debug("Config(edgecam)")
     edgecam = data["edgecam"]
     t = PrettyTable(["id", 
                     "camera",

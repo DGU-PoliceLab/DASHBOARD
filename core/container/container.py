@@ -30,13 +30,13 @@ class Container():
             self._run('pls-mysql')
 
     def _run(self, target):
-        self.logger.debug(f"{PATH} Starting container({target})...")
+        self.logger.debug("Starting container({target})...")
         container = self.client.containers.run('pls-module', detach=True)
         _containers = self._running()
         if container.name in _containers:
-            self.logger.debug(f"{PATH} Container({container.name}) is running")
+            self.logger.debug("Container({container.name}) is running")
         else:
-            self.logger.debug(f"{PATH} Container({container.name}) occurred error while starting")
+            self.logger.debug("Container({container.name}) occurred error while starting")
 
     def _running(self):
         containers = []
@@ -60,8 +60,8 @@ class Container():
                 _stopped.append(_container)
         state = False in result
         if not state:
-            self.logger.debug(f"{PATH} Container state: Good, Running: {_running}")
+            self.logger.debug("Container state: Good, Running: {_running}")
         else:
-            self.logger.debug(f"{PATH} Container state: Bad, Running: {_running}, Stopped: {_stopped}")
+            self.logger.debug("Container state: Bad, Running: {_running}, Stopped: {_stopped}")
         result.append(state)
         return result

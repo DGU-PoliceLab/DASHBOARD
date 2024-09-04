@@ -3,7 +3,7 @@ from core.edgecam.edgecam import Edgecam
 from core.database.db import Database
 from util.logger import set_logger
 
-PATH = "[core.container.monit]"
+PATH = "[core.edgecam.monit]"
 
 def monit_edgecam(config, db, interval = 1):
     logger = set_logger(PATH)

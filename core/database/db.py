@@ -9,11 +9,19 @@ class Database():
     def __init__(self):
         self.file = "./store.db"
         self.table_list = ["system", "container", "module", "edgecam"]
+        self.module_state = {
+            "processing_fps": 0,
+            "falldown": False,
+            "selfharm": False,
+            "emotion": False,
+            "violence": False,
+            "longterm": False,
+        }
+        self.module_cache = []
         self.con = sqlite3.connect(self.file)
         self.cur = self.con.cursor()
         self.logger = set_logger(PATH)
         self.create()
-        
 
     def _create_system(self):
         sql = '''
@@ -253,7 +261,7 @@ class Database():
         except Exception as e:
             self.logger.error(f"Error occurred, err: {e}")
 
-    def select(self, target, limit = 0, visualize = True):
+    def select(self, target, limit = 0, visualize = False):
         if limit == 0:
             sql = f"SELECT * FROM {target} ORDER BY id DESC"
             self.cur.execute(sql)
@@ -262,5 +270,6 @@ class Database():
             self.cur.execute(sql)
         response = self.cur.fetchall()
         if visualize:
+            pass
             self._visualize(target, response)
         return response

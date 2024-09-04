@@ -85,6 +85,40 @@ export const containerLogColumns = [
     },
 ];
 
+export const moduleLogColumns = [
+    { field: "id", headerName: "No", flex: 1, minWidth: 40 },
+    {
+        field: "level",
+        headerName: "레벨",
+        flex: 1,
+        minWidth: 40,
+        renderCell: (params) => renderStatus(params.value),
+    },
+    { field: "occurred_at", headerName: "일시", flex: 2, minWidth: 80 },
+    { field: "process_fps", headerName: "처리속도", flex: 1, minWidth: 40 },
+    { field: "falldown", headerName: "낙상 모듈", flex: 1, minWidth: 40 },
+    {
+        field: "selfharm",
+        headerName: "자살 및 자해 모듈",
+        flex: 1,
+        minWidth: 40,
+    },
+    { field: "emotion", headerName: "감정 모듈", flex: 1, minWidth: 40 },
+    { field: "violence", headerName: "폭행 모듈", flex: 1, minWidth: 40 },
+    {
+        field: "longterm",
+        headerName: "장시간 고정자세 모듈",
+        flex: 1,
+        minWidth: 40,
+    },
+    {
+        field: "is_error",
+        headerName: "오류발생",
+        flex: 1,
+        minWidth: 40,
+    },
+];
+
 export const edgecamLogColumns = [
     { field: "id", headerName: "No", flex: 1, minWidth: 40 },
     {

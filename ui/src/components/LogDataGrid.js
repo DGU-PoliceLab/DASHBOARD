@@ -3,6 +3,7 @@ import { DataGrid } from "@mui/x-data-grid";
 import {
     systemLogColumns,
     containerLogColumns,
+    moduleLogColumns,
     edgecamLogColumns,
 } from "../data/logData";
 import { Backdrop, Box } from "@mui/material";
@@ -14,7 +15,7 @@ export default function LogDataGrid({ open, close, target, data }) {
     } else if (target === "container") {
         columns = containerLogColumns;
     } else if (target === "module") {
-        columns = containerLogColumns;
+        columns = moduleLogColumns;
     } else if (target === "edgecam") {
         columns = edgecamLogColumns;
     }

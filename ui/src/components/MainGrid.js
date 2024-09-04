@@ -19,6 +19,7 @@ import {
     convEdgecamData,
     convSystemLog,
     convContainerLog,
+    convModuleLog,
     convEdgecamLog,
 } from "../data/DataConverter";
 import LogDataGrid from "./LogDataGrid";
@@ -79,10 +80,13 @@ export default function MainGrid() {
                 "http://localhost:8000/log?target=" + target
             );
             const data = response["data"];
+            console.table(data[target]);
             if (target === "system") {
                 convData = convSystemLog(data[target]);
             } else if (target === "container") {
                 convData = convContainerLog(data[target]);
+            } else if (target === "module") {
+                convData = convModuleLog(data[target]);
             } else if (target === "edgecam") {
                 convData = convEdgecamLog(data[target]);
             }

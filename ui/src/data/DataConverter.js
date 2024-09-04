@@ -138,6 +138,8 @@ export const convContainerLog = (log) => {
 };
 
 export const convModuleData = (data) => {
+    console.log(data);
+
     let result = [
         {
             id: 1,
@@ -170,6 +172,25 @@ export const convModuleData = (data) => {
             status: data["violence"] ? "Online" : "Offline",
         },
     ];
+    return result;
+};
+
+export const convModuleLog = (log) => {
+    let result = [];
+    log.forEach((item, idx) => {
+        result.push({
+            id: item[0],
+            level: item[1],
+            occurred_at: new Date(item[2] * 1000).toLocaleString(),
+            process_fps: item[3],
+            falldown: item[4] === 1 ? "Online" : "Offline",
+            selfharm: item[5] === 1 ? "Online" : "Offline",
+            emotion: item[6] === 1 ? "Online" : "Offline",
+            violence: item[7] === 1 ? "Online" : "Offline",
+            longterm: item[8] === 1 ? "Online" : "Offline",
+            is_error: item[9] === 1 ? "True" : "False",
+        });
+    });
     return result;
 };
 

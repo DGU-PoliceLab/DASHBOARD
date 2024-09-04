@@ -1,10 +1,21 @@
 import ast
+import json
 from core.database.web import Database
 
 class ModuleApi():
     def __init__(self):
         self.db = Database()
         self.response = {}
+        self.state = {
+            "processing_fps": 0,
+            "falldown": False,
+            "selfharm": False,
+            "emotion": False,
+            "violence": False,
+            "longterm": False,
+            "is_error": False
+        }
+        self.cache = []
 
     def _parse_status(self, data):
         if data == 'info':
@@ -35,11 +46,28 @@ class ModuleApi():
 
     def realtime(self):
         try:
-            # response = self.db.select("module", 1)
-            response = [(0, 'error', 0, 0, False, False, False, False, False)]
+            response = self.db.select("module", 1)
             self.response = self.parse(response[0])
         except Exception as e:
             print("errro")
         finally:
             return self.response
 
+    def update(self, target, data):
+        if target == "process":
+            self.state["processing_fps"] = data
+        elif target == "module":
+            self.cache.append(data)
+            if len(self.cache) > 10:
+                self.cache.pop(0)
+            self.state["falldown"] = "falldown" in self.cache
+            self.state["selfharm"] = "selfharm" in self.cache
+            self.state["emotion"] = "emotion" in self.cache
+            self.state["violence"] = "violence" in self.cache
+            self.state["longterm"] = "longterm" in self.cache
+            self.state["is_error"] = False in self.state.values()
+            self.save()
+
+    def save(self):
+        with open("module.json", "w") as f:
+            json.dump(self.state, f)
