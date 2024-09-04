@@ -16,6 +16,7 @@ class ModuleApi():
             "is_error": False
         }
         self.cache = []
+        self.save()
 
     def _parse_status(self, data):
         if data == 'info':

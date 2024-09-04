@@ -1,1 +1,1 @@
-{"processing_fps": 0, "falldown": true, "selfharm": true, "emotion": true, "violence": true, "longterm": false, "is_error": true}
+{"processing_fps": 0, "falldown": false, "selfharm": false, "emotion": false, "violence": false, "longterm": false, "is_error": false}
