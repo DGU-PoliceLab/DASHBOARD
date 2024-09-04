@@ -13,7 +13,7 @@
 
 -   치안 현장의 문제해결을 위해 실제 적용 및 검증할 수 있도록 현장에서 실증연구를 강화하여 완결성 제고
 
-![PoliceLab 2.0](/resource/introduction.png)  
+![PoliceLab 2.0](/resource/introduction.png)
 
 ## 주요기능
 
@@ -56,7 +56,19 @@
 ### 1. 라이브러리 설치
 
 ```
-pip install -r requirements.txt
+python install.py
+```
+
+오프라인 환경에서 /package 디렉토리 하위에 있는 패키지로 설치됩니다. 설치가 올바르게 되지 않을 겅우 아래 명령어를 실행합니다.
+
+```
+pip install --no-index -f ./package fastapi
+pip install --no-index -f ./package uvicorn
+pip install --no-index -f ./package jinja2
+pip install --no-index -f ./package psutil
+pip install --no-index -f ./package docker
+pip install --no-index -f ./package ping3
+pip install --no-index -f ./package prettytable
 ```
 
 대시보드 실행을 위해 아래 라이브러리가 필요합니다.
@@ -68,6 +80,8 @@ pip install -r requirements.txt
 -   docker
 -   ping3
 -   prettytable
+
+> 2024.09.04 수정됨
 
 ### 2. Config 수정
 

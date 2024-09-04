@@ -163,5 +163,5 @@ cython_debug/
 
 store.db
 .db
-
+*.db
 .DS_Store
