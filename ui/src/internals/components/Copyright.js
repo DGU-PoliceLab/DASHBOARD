@@ -16,8 +16,8 @@ export default function Copyright(props) {
             ]}
         >
             {"Copyright © "}
-            <Link color="inherit" href="https://mui.com/">
-                Policelab2.0
+            <Link color="inherit" href="https://www.dongguk.edu">
+                DONGGUK UNIVERSITY
             </Link>{" "}
             {new Date().getFullYear()}
             {"."}
