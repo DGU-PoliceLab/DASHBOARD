@@ -107,19 +107,11 @@ config.json
 
 # 실행
 
-### 모니터링
+### 대시보드 & 모니터링
 
-서버의 상태 모니터링 및 데이터베이스 기록 기능을 실행합니다.
-
-```
-python monit.py
-```
-
+-   서버의 상태 시각화 기능을 실행합니다.
+-   서버의 상태 모니터링 및 데이터베이스 기록 기능을 실행합니다.
 -   Docker Desktop이 실행상태가 아니라면 자동으로 실행됩니다.(Windows만 지원)
-
-### 대시보드
-
-서버의 상태 시각화 기능을 실행합니다.
 
 ```
 uvicorn main:app --reload
@@ -128,6 +120,8 @@ uvicorn main:app --reload
 다음 링크로 대시보드에 접속합니다.
 [DASHBOARD](http://localhost:8000)
 또는 https://localhost:8000
+
+> 2024.09.04 수정됨
 
 # 설명
 
