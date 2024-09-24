@@ -47,7 +47,7 @@ class EdgecamApi():
             response = self.db.select("edgecam", 1)
             self.response = self.parse(response[0])
         except Exception as e:
-            print("errro")
+            print("error")
         finally:
             return self.response
 

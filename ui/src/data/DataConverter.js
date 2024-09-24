@@ -87,33 +87,33 @@ export const convContainerData = (data) => {
     let result = [
         {
             id: 1,
-            name: "pls-web",
-            desc: "웹 호스팅을 위한 컨테이너",
-            status: data["web"] ? "Online" : "Offline",
+            name: "pls-platform",
+            desc: "웹 서비스 구동을 위한 컨테이너",
+            status: data["platform"] ? "Online" : "Offline",
         },
         {
             id: 2,
-            name: "pls-was",
-            desc: "서비스 구동을 위한 컨테이너",
-            status: data["was"] ? "Online" : "Offline",
-        },
-        {
-            id: 3,
             name: "pls-module",
             desc: "인공지능 모듈 구동을 위한 컨테이너",
             status: data["module"] ? "Online" : "Offline",
         },
         {
-            id: 4,
+            id: 3,
             name: "pls-mysql",
             desc: "기반 데이터 저장을 위한 컨테이너",
             status: data["mysql"] ? "Online" : "Offline",
         },
         {
-            id: 5,
+            id: 4,
             name: "pls-redis",
             desc: "임시 및 캐싱 데이터 저장을 위한 컨테이너",
             status: data["redis"] ? "Online" : "Offline",
+        },
+        {
+            id: 5,
+            name: "-",
+            desc: "-",
+            status: "None",
         },
     ];
     return result;
@@ -126,12 +126,11 @@ export const convContainerLog = (log) => {
             id: item[0],
             level: item[1],
             occurred_at: new Date(item[2] * 1000).toLocaleString(),
-            web: item[3] === 1 ? "Online" : "Offline",
-            was: item[4] === 1 ? "Online" : "Offline",
-            module: item[5] === 1 ? "Online" : "Offline",
-            mysql: item[6] === 1 ? "Online" : "Offline",
-            redis: item[7] === 1 ? "Online" : "Offline",
-            is_error: item[8] === 1 ? "True" : "False",
+            platform: item[3] === 1 ? "Online" : "Offline",
+            module: item[4] === 1 ? "Online" : "Offline",
+            mysql: item[5] === 1 ? "Online" : "Offline",
+            redis: item[6] === 1 ? "Online" : "Offline",
+            is_error: item[7] === 1 ? "True" : "False",
         });
     });
     return result;

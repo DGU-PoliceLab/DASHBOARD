@@ -17,15 +17,13 @@ class ContainerApi():
 
     def parse(self, data):
         _status = self._parse_status(data[1])
-        _web = bool(data[3])
-        _was = bool(data[4])
-        _module = bool(data[5])
-        _mysql = bool(data[6])
-        _redis = bool(data[7])
+        _platform = bool(data[3])
+        _module = bool(data[4])
+        _mysql = bool(data[5])
+        _redis = bool(data[6])
         return {
             "status": _status,
-            "web": _web,
-            "was": _was,
+            "platform": _platform,
             "module": _module,
             "mysql": _mysql,
             "redis": _redis,
@@ -36,7 +34,7 @@ class ContainerApi():
             response = self.db.select("container", 1)
             self.response = self.parse(response[0])
         except Exception as e:
-            print("errro")
+            print("error")
         finally:
             return self.response
 

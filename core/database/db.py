@@ -48,8 +48,7 @@ class Database():
                     id INTEGER PRIMARY KEY, 
                     level TEXT,
                     occurred_at REAL,
-                    check_web INTEGER, 
-                    check_was INTEGER, 
+                    check_platform INTEGER, 
                     check_module INTEGER, 
                     check_mysql INTEGER, 
                     check_redis INTEGER, 
@@ -133,21 +132,20 @@ class Database():
     def _insert_container(self, time_stamp, data):
         try:
             level = "info"
-            if data[5]:
+            if data[4]:
                 level = "error"
             sql = '''
                 INSERT INTO container (
                     level, 
                     occurred_at, 
-                    check_web, 
-                    check_was, 
+                    check_platform, 
                     check_module, 
                     check_mysql, 
                     check_redis, 
                     is_error
-                ) VALUES(?, ?, ?, ?, ?, ?, ?, ?)
+                ) VALUES(?, ?, ?, ?, ?, ?, ?)
                 '''
-            self.cur.execute(sql, (level, time_stamp, int(data[0]), int(data[1]), int(data[2]), int(data[3]), int(data[4]), int(data[5])))
+            self.cur.execute(sql, (level, time_stamp, int(data[0]), int(data[1]), int(data[2]), int(data[3]), int(data[4])))
         except Exception as e:
             self.logger.error(f"Error occurred, err: {e}")
 
@@ -229,8 +227,7 @@ class Database():
                 t = PrettyTable(["id", 
                     "level", 
                     "occurred_at", 
-                    "check_web", 
-                    "check_was", 
+                    "check_platform", 
                     "check_module", 
                     "check_mysql", 
                     "check_redis", 

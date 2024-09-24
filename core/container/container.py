@@ -49,7 +49,7 @@ class Container():
         result = []
         _running = []
         _stopped = []
-        check_containers = ["pls-web", "pls-was", "pls-module", "pls-mysql", "pls-redis"]
+        check_containers = ["pls-platform", "pls-module", "pls-mysql", "pls-redis"]
         running_containers = self._running()
         for _container in check_containers:
             if _container in running_containers:
