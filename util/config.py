@@ -31,7 +31,7 @@ def check(file):
 def load():
     file = "./config.json"
     check(file)
-    with open(file, 'r') as f:
+    with open(file, 'r', encoding='UTF8') as f:
         config_data = json.load(f)
     visualize(config_data)
     return config_data

@@ -70,5 +70,5 @@ class ModuleApi():
             self.save()
 
     def save(self):
-        with open("module.json", "w") as f:
+        with open("module.json", "w", encoding='UTF8') as f:
             json.dump(self.state, f)
